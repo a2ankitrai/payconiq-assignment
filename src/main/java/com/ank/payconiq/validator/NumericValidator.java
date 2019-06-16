@@ -6,7 +6,6 @@ import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ank.payconiq.validator.annotation.Numeric;
- 
 
 public class NumericValidator implements ConstraintValidator<Numeric, String> {
 
@@ -20,4 +19,3 @@ public class NumericValidator implements ConstraintValidator<Numeric, String> {
     }
 
 }
-

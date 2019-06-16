@@ -9,7 +9,9 @@ public interface StockService {
 
 	List<StockVo> getAllStocks();
 
-	StockVo getStockById(int id);
+	StockVo getStockById(long id);
 	
-	StockVo updateStockById(int id, BigDecimal price);
+	StockVo updateStockById(long id, BigDecimal price);
+	
+	StockVo createNewStock(StockVo stockVo);
 }
