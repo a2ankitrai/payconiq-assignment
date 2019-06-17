@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ank.payconiq.exception.StockException;
 import com.ank.payconiq.service.StockService;
 import com.ank.payconiq.validator.annotation.Numeric;
 import com.ank.payconiq.validator.annotation.Price;
@@ -48,8 +49,10 @@ public class StockController {
 
 		stockVo = stockService.getStockById(Integer.valueOf(stockId));
 
-		HttpStatus status = stockVo != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-		response = new ResponseEntity<>(stockVo, status);
+		if (stockVo == null) {
+			throw new StockException("No Stock found by entered Id", HttpStatus.NOT_FOUND);
+		}
+		response = new ResponseEntity<>(stockVo, HttpStatus.OK);
 		return response;
 	}
 
@@ -62,8 +65,10 @@ public class StockController {
 
 		stockVo = stockService.updateStockById(Long.parseLong(stockId), new BigDecimal(updatedPrice));
 
-		HttpStatus status = stockVo != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-		response = new ResponseEntity<>(stockVo, status);
+		if (stockVo == null) {
+			throw new StockException("No Stock found by entered Id", HttpStatus.NOT_FOUND);
+		}
+		response = new ResponseEntity<>(stockVo, HttpStatus.OK);
 		return response;
 	}
 

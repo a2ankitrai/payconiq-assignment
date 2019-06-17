@@ -9,7 +9,7 @@ public interface StockDao {
 
 	List<Stock> getAllStocks();
 
-	Stock addNewStock(Stock stock);
+	Stock createNewStock(Stock stock);
 	
 	Stock getStockById(long id);
 	

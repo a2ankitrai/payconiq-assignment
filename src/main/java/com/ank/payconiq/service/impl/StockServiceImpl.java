@@ -2,8 +2,6 @@ package com.ank.payconiq.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +15,7 @@ import com.ank.payconiq.dao.StockDao;
 import com.ank.payconiq.exception.StockException;
 import com.ank.payconiq.model.Stock;
 import com.ank.payconiq.service.StockService;
+import com.ank.payconiq.util.StockUtil;
 import com.ank.payconiq.vo.StockVo;
 
 @Service
@@ -32,7 +31,7 @@ public class StockServiceImpl implements StockService {
 
 				.stream()
 
-				.map(s -> transformStock(s))
+				.map(s -> StockUtil.transformStock(s))
 
 				.collect(Collectors.toList());
 
@@ -43,9 +42,9 @@ public class StockServiceImpl implements StockService {
 
 		return Optional.ofNullable(stockDao.getStockById(id))
 
-				.map(s -> transformStock(s))
+				.map(s -> StockUtil.transformStock(s))
 
-				.orElseThrow(() -> new StockException("No Stock found by entered Id"));
+				.orElse(null);
 
 	}
 
@@ -54,9 +53,9 @@ public class StockServiceImpl implements StockService {
 
 		return Optional.ofNullable(stockDao.updateStockById(id, price))
 
-				.map(s -> transformStock(s))
+				.map(s -> StockUtil.transformStock(s))
 
-				.orElseThrow(() -> new StockException("No Stock found by entered Id"));
+				.orElse(null);
 
 	}
 
@@ -77,9 +76,9 @@ public class StockServiceImpl implements StockService {
 
 				.build();
 
-		stock = stockDao.addNewStock(stock);
+		stock = stockDao.createNewStock(stock);
 
-		return transformStock(stock);
+		return StockUtil.transformStock(stock);
 	}
 
 	private boolean stockNameExists(StockVo stockVo) {
@@ -89,20 +88,6 @@ public class StockServiceImpl implements StockService {
 				.stream()
 
 				.anyMatch(s -> s.getName().equalsIgnoreCase(stockVo.getStockName()));
-	}
-
-	private StockVo transformStock(Stock s) {
-
-		if (s == null)
-			return null;
-		StockVo sv = new StockVo();
-		sv.setId(s.getId());
-		sv.setStockName(s.getName());
-		sv.setPrice(s.getCurrentPrice().toString());
-		sv.setLastUpdated(s.getLastUpdate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
-
-		return sv;
-
 	}
 
 }

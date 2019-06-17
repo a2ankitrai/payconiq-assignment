@@ -28,7 +28,7 @@ public class StockDaoImpl implements StockDao {
 	}
 
 	@Override
-	public Stock addNewStock(Stock stock) {
+	public Stock createNewStock(Stock stock) {
 
 		stock.setId(stockIdentifier.incrementAndGet());
 		stockList.add(stock);
